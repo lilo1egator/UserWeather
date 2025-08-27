@@ -15,10 +15,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
-      <body className="min-h-full bg-slate-50 text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-100">
+      <body className="flex min-h-screen flex-col bg-slate-50 text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-100">
         <header
           className="
-            sticky top-0 z-50 border-b border-slate-200/70 bg-white/70 backdrop-blur
+            h-16 sticky top-0 z-50 border-b border-slate-200/70 bg-white/70 backdrop-blur
             dark:border-slate-700/60 dark:bg-slate-900/60
           "
         >
@@ -38,24 +38,19 @@ export default function RootLayout({
           </div>
         </header>
 
-        <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <main className="flex-1 mx-auto max-w-7xl w-full px-4 py-8 sm:px-6 lg:px-8">
           {children}
         </main>
 
-        <footer
-          className="
-            border-t border-slate-200/70 bg-white/60 py-6 text-sm text-slate-500
-            dark:border-slate-700/60 dark:bg-slate-900/50
-          "
-        >
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <footer className="h-16 border-t border-slate-200/70 bg-white/60 text-sm text-slate-500 dark:border-slate-700/60 dark:bg-slate-900/50 flex items-center">
+          <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
             <p>© {new Date().getFullYear()} UserWeather</p>
-            <a
-              href="https://github.com/your-repo"
+            <Link
+              href="https://github.com/lilo1egator/UserWeather"
               className="rounded-md px-2 py-1 underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             >
               GitHub
-            </a>
+            </Link>
           </div>
         </footer>
       </body>

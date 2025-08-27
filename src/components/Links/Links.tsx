@@ -11,7 +11,7 @@ export default function NavLinks() {
   const inactive =
     "text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white";
   const active =
-    "text-blue-600 dark:text-blue-400";
+    "text-blue-600 dark:text-blue-400 underline decoration-1 underline-offset-4";
 
   return (
     <nav className="flex items-center gap-2">
