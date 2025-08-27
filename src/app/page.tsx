@@ -11,6 +11,7 @@ export default function Home() {
   const [users, setUsers] = useState<UserCardData[]>([]);
   const [offset, setOffset] = useState<number>(0);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const onRequest = () => {
     getAllUsers(offset)
@@ -18,7 +19,11 @@ export default function Home() {
         setUsers((users) => [...users, ...data]);
         setOffset((offset) => offset + 1);
       })
-      .catch((e) => console.error(e))
+      .catch((e) => {
+        setLoading(false);
+        setError(true);
+        console.error(e)
+      })
       .finally(() => setLoading(false));
   };
 
@@ -26,13 +31,13 @@ export default function Home() {
     onRequest()
   }, []);
 
-  if (loading) {
-    return <div className="p-8">Loading…</div>;
-  }
-
   return (
     <div className="font-sans w-full h-full grid place-items-center">
-      <UserList users={users} onRequest={onRequest}/>
+      <UserList 
+              users={users} 
+              onRequest={onRequest} 
+              loading={loading}
+              error={error}/>
     </div>
   );
 }

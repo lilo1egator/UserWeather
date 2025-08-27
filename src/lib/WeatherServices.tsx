@@ -26,7 +26,7 @@ export default function WeatherServices() {
             id: login.uuid,
             name: nameUser,
             email,
-            gender,
+            gender: gender[0].toUpperCase() + '' + gender.slice(1).toLowerCase(),
             image: picture.medium,
             location: {
                 city: location.city,

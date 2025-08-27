@@ -1,15 +1,23 @@
 'use client';
 
-import { UserCardData } from "@/types/user";    
+import { UserCardData } from "@/types/user";  
+
+
+import ErrorList from "@/components/ErrorList/ErrorList";
+import LoaderList from "@/components/LoaderList/LoaderList";
+
 import User from "@/components/User/User";
 
 type Props = {
   users: UserCardData[];
   onRequest: () => void;
+  loading: boolean;
+  error: boolean;
 };
 
-export default function UserList({users, onRequest}: Props) {
-    
+export default function UserList({users, onRequest, loading, error}: Props) {
+    const components = users.map(user => <User values={user} key={user.id}/>)
+
 
     return (
         <div className="w-full">
@@ -17,8 +25,9 @@ export default function UserList({users, onRequest}: Props) {
 
         {/* Grid карток */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {users.map(user => <User values={user}
-                                     key={user.id}/>)}
+            {
+                loading ? <LoaderList/> : error ? <ErrorList/> : components
+            }
         </div>
 
         
