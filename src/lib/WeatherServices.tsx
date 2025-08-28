@@ -1,4 +1,5 @@
 import { UserCardData } from "@/types/user";
+import { useHttp } from "@/hooks/http.hooks";
 
 interface ApiUser {
   gender: string;
@@ -11,11 +12,11 @@ interface ApiUser {
 
 export default function WeatherServices() {
     const url = 'https://randomuser.me/api/';
+    const {loading, error, request, clearError} = useHttp();
 
     const getAllUsers = async (page: number) => {
-        const response = await fetch(`${url}?results=6&page=${page}`);
-        const data = await response.json();
-        return data.results.map(_transformUser);
+        const response = await request(`${url}?results=6&page=${page}`);
+        return response.results.map(_transformUser);
     }
 
     const _transformUser = (user: ApiUser): UserCardData => {
@@ -36,5 +37,10 @@ export default function WeatherServices() {
     }
 
 
-    return{getAllUsers}
+    return{
+        getAllUsers,
+        loading,
+        error,
+        clearError
+    }
 }

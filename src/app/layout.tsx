@@ -1,8 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { UsersProvider } from "@/providers/UsersProvider";
+import NavLinks from "@/components/Links/Links";
 
 import "./globals.scss";
-import NavLinks from "@/components/Links/Links";
+
 
 export const metadata: Metadata = {
   title: "UserWeather",
@@ -39,7 +41,9 @@ export default function RootLayout({
         </header>
 
         <main className="flex-1 mx-auto max-w-7xl w-full px-4 py-8 sm:px-6 lg:px-8">
-          {children}
+          <UsersProvider>
+            {children}
+          </UsersProvider>
         </main>
 
         <footer className="h-16 border-t border-slate-200/70 bg-white/60 text-sm text-slate-500 dark:border-slate-700/60 dark:bg-slate-900/50 flex items-center">

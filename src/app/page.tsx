@@ -2,42 +2,46 @@
 
 import UserList from "@/components/UserList/UserList";
 import WeatherServices from "@/lib/WeatherServices";
+import { useUsersContext } from "@/providers/UsersProvider";
 
-import { UserCardData } from "@/types/user";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 export default function Home() {
-  const { getAllUsers } = WeatherServices();
-  const [users, setUsers] = useState<UserCardData[]>([]);
-  const [offset, setOffset] = useState<number>(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const {users, setUsers, addToSaveUsers} = useUsersContext(); 
+  const {loading, error, clearError, getAllUsers} = WeatherServices();
+  
+  const [newLoadingUser, setNewLoadingUser] = useState(false);
+  const [offset, setOffset] = useState<number>(1);
 
-  const onRequest = () => {
-    getAllUsers(offset)
+  const onRequest = useCallback((off: number, initial: boolean) => {
+    clearError();
+    setNewLoadingUser(!initial);
+
+    getAllUsers(off)
       .then((data) => {
-        setUsers((users) => [...users, ...data]);
-        setOffset((offset) => offset + 1);
+        setUsers(prev => (prev.length === 0 ? data : [...prev, ...data]));
+        setOffset(prev => prev + 1);
       })
-      .catch((e) => {
-        setLoading(false);
-        setError(true);
-        console.error(e)
-      })
-      .finally(() => setLoading(false));
-  };
+      .catch(console.error)
+      .finally(() => setNewLoadingUser(false));
+  }, [getAllUsers, setUsers, users.length, clearError]);
 
   useEffect(() => {
-    onRequest()
+    if (users.length === 0) onRequest(offset, true)
   }, []);
 
+      console.log(loading)
+        
   return (
     <div className="font-sans w-full h-full grid place-items-center">
-      <UserList 
-              users={users} 
-              onRequest={onRequest} 
-              loading={loading}
-              error={error}/>
+      <UserList
+        users={users}
+        newLoadingUser={newLoadingUser}
+        onRequest={() => onRequest(offset, false)}
+        loading={loading}
+        error={error}
+        addToSaveUsers={addToSaveUsers}
+      />
     </div>
   );
 }
