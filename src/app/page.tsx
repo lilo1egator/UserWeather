@@ -30,7 +30,6 @@ export default function Home() {
     if (users.length === 0) onRequest(offset, true)
   }, []);
 
-      console.log(loading)
         
   return (
     <div className="font-sans w-full h-full grid place-items-center">

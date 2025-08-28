@@ -7,20 +7,33 @@ interface ProvidersProps {
     users: UserCardData[];
     saveUsers: UserCardData[];
     setUsers: React.Dispatch<React.SetStateAction<UserCardData[]>>;
-    addToSaveUsers: (id: string) => void;
+    addToSaveUsers: (user: UserCardData) => void;
 }
 
 const userContext = createContext<ProvidersProps | null>(null);
 
+const LS_KEY = 'saved_users';
+
 export function UsersProvider({children}: {children: React.ReactNode}) {
     const [users, setUsers] = useState<UserCardData[]>([]);
-    const [saveUsers, setSaveUsers] = useState<UserCardData[]>([]);
-    console.log(users)
-    const addToSaveUsers = (id: string) => {
-        const userToSave = users.find(user => user.id === id);
-        if (userToSave && !saveUsers.some(user => user.id === id)) {
-            setSaveUsers(prev => [...prev, userToSave]);
+    const [saveUsers, setSaveUsers] = useState<UserCardData[]>(() => {
+        if (typeof window !== 'undefined') {
+            const saved = localStorage.getItem(LS_KEY);
+            return saved ? JSON.parse(saved) : [];
         }
+        return [];
+    });
+
+    useEffect(() => {
+        localStorage.setItem(LS_KEY, JSON.stringify(saveUsers));
+    }, [saveUsers]);
+
+    
+    const addToSaveUsers = (user: UserCardData) => {
+        setSaveUsers(prev => {
+            if (prev.some(x => x.id === user.id)) return prev;
+            return [...prev, user];
+        });
     }
 
     const value = useMemo(

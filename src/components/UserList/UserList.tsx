@@ -11,7 +11,7 @@ type Props = {
   loading: boolean;
   error: boolean | null;
   newLoadingUser: boolean;
-  addToSaveUsers?: (id: string) => void;
+  addToSaveUsers?: (user: UserCardData) => void;
 };
 
 export default function UserList({

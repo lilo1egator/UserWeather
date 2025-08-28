@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 export default function User({
   values,
   addToSaveUsers,
-}: { values: UserCardData; addToSaveUsers?: (id: string) => void }) {
+}: { values: UserCardData; addToSaveUsers?: (user: UserCardData ) => void }) {
   const pathname = usePathname();
 
   const canSave = pathname === "/" && !!addToSaveUsers;
@@ -34,7 +34,7 @@ export default function User({
         {canSave && (
           <button
             className="flex-1 rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700"
-            onClick={() => addToSaveUsers?.(values.id)}
+            onClick={() => addToSaveUsers?.(values)}
           >
             Save
           </button>
