@@ -8,26 +8,26 @@ import { useState, useEffect, useCallback } from "react";
 
 export default function Home() {
   const {users, setUsers, addToSaveUsers} = useUsersContext(); 
-  const {loading, error, clearError, getAllUsers} = WeatherServices();
+  const {loading, error, clearError, getAllUsersWithWeather} = WeatherServices();
   
   const [newLoadingUser, setNewLoadingUser] = useState(false);
   const [offset, setOffset] = useState<number>(1);
 
-  const onRequest = useCallback((off: number, initial: boolean) => {
+  const onRequest = useCallback(async (initial: boolean = false) => {
     clearError();
     setNewLoadingUser(!initial);
 
-    getAllUsers(off)
+    await getAllUsersWithWeather(offset)
       .then((data) => {
         setUsers(prev => (prev.length === 0 ? data : [...prev, ...data]));
         setOffset(prev => prev + 1);
       })
       .catch(console.error)
       .finally(() => setNewLoadingUser(false));
-  }, [getAllUsers, setUsers, users.length, clearError]);
+  }, [getAllUsersWithWeather, offset, clearError, newLoadingUser]);
 
   useEffect(() => {
-    if (users.length === 0) onRequest(offset, true)
+    if (users.length === 0) onRequest(true)
   }, []);
 
         
@@ -36,7 +36,7 @@ export default function Home() {
       <UserList
         users={users}
         newLoadingUser={newLoadingUser}
-        onRequest={() => onRequest(offset, false)}
+        onRequest={() => onRequest(false)}
         loading={loading}
         error={error}
         addToSaveUsers={addToSaveUsers}

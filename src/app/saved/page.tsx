@@ -2,7 +2,7 @@
 
 import UserList from "@/components/UserList/UserList";
 import { useUsersContext } from "@/providers/UsersProvider";
-import { UserCardData } from "@/types/user";
+import { UserWithWeather } from "@/types/user";
 
 import { useCallback, useEffect, useState } from "react";
 
@@ -11,7 +11,7 @@ const OFFSET = 6;
 export default function Saved() {
   const { saveUsers } = useUsersContext();
 
-  const [visible, setVisible] = useState<UserCardData[]>(saveUsers);
+  const [visible, setVisible] = useState<UserWithWeather[]>(saveUsers);
   const [newLoadingUser, setNewLoadingUser] = useState(false);
 
   useEffect(() => {

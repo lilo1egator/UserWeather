@@ -1,17 +1,17 @@
 'use client';
 
-import { UserCardData } from "@/types/user";  
+import { UserWithWeather } from "@/types/user";  
 import ErrorList from "@/components/ErrorList/ErrorList";
 import LoaderList from "@/components/LoaderList/LoaderList";
 import User from "@/components/User/User";
 
 type Props = {
-  users: UserCardData[];
+  users: UserWithWeather[];
   onRequest: () => void;
   loading: boolean;
   error: boolean | null;
   newLoadingUser: boolean;
-  addToSaveUsers?: (user: UserCardData) => void;
+  addToSaveUsers?: (user: UserWithWeather) => void;
 };
 
 export default function UserList({

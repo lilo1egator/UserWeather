@@ -1,13 +1,13 @@
 'use client';
 
-import { UserCardData } from "@/types/user";
+import { UserWithWeather } from "@/types/user";
 import { useState, useEffect, createContext, useContext, useMemo} from "react";
 
 interface ProvidersProps {
-    users: UserCardData[];
-    saveUsers: UserCardData[];
-    setUsers: React.Dispatch<React.SetStateAction<UserCardData[]>>;
-    addToSaveUsers: (user: UserCardData) => void;
+    users: UserWithWeather[];
+    saveUsers: UserWithWeather[];
+    setUsers: React.Dispatch<React.SetStateAction<UserWithWeather[]>>;
+    addToSaveUsers: (user: UserWithWeather) => void;
 }
 
 const userContext = createContext<ProvidersProps | null>(null);
@@ -15,8 +15,8 @@ const userContext = createContext<ProvidersProps | null>(null);
 const LS_KEY = 'saved_users';
 
 export function UsersProvider({children}: {children: React.ReactNode}) {
-    const [users, setUsers] = useState<UserCardData[]>([]);
-    const [saveUsers, setSaveUsers] = useState<UserCardData[]>(() => {
+    const [users, setUsers] = useState<UserWithWeather[]>([]);
+    const [saveUsers, setSaveUsers] = useState<UserWithWeather[]>(() => {
         if (typeof window !== 'undefined') {
             const saved = localStorage.getItem(LS_KEY);
             return saved ? JSON.parse(saved) : [];
@@ -29,7 +29,7 @@ export function UsersProvider({children}: {children: React.ReactNode}) {
     }, [saveUsers]);
 
     
-    const addToSaveUsers = (user: UserCardData) => {
+    const addToSaveUsers = (user: UserWithWeather) => {
         setSaveUsers(prev => {
             if (prev.some(x => x.id === user.id)) return prev;
             return [...prev, user];
